@@ -1,58 +1,52 @@
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Karma Manager is an Anagram Maker</title>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="karma_manager.js"></script>
-<style>
-table, th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
-}
-table tr:nth-child(odd) {
-  background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
-  background-color: #ffffff;
-}
-</style>
-<style type="text/css">
-    .divFloat {
-        margin: 10px auto;
-        float: top;
-        background-color: #FFF;
-        color: #000;
-        width: 80vw;
-        # height: auto;
-        padding: 5vw;
-        border: solid 1px #999;
-        -webkit-border-radius: 3px;
-        -webkit-box-orient: vertical;
-        -webkit-transition: 200ms -webkit-transform;
-        box-shadow: 0 4px 23px 5px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.15);
-    }
-</style>
-    </head>
-    
-    <body>
-        <span style="font-size:4vw">Karma Manager </span>
-        <span style="font-size:3vw">the Anagram Maker</span><p/>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karma Manager is an Anagram Maker</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="karma_manager.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="container" role="main">
+        <h1>Karma Manager </h1>
+        <h2>The Anagram Maker</h2>
 
         <div ng-app="karmaManager" ng-controller="karmaKontrol">
-            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords" ng-model-options='{ debounce: 500 }'></input><p/>
-            Dictionaries: /<span ng-repeat="d in config.dictionaries"><input type="checkbox" ng-model="d.enabled" ng-change="refreshDictionaries()">{{ d.description }}</input>/</span><p/>
-            Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary<p/>
+            Input words: <input type="text" style="width: 30vw;" ng-model="sourceWords"
+                ng-model-options='{ debounce: 500 }'></input>
+            <p />
+            Dictionaries: /<span ng-repeat="d in config.dictionaries"><input type="checkbox" ng-model="d.enabled"
+                    ng-change="refreshDictionaries()">{{ d.description }}</input>/</span>
+            <p />
+            Searching using <button ng-click="toggleWords()">{{km.pool.length}}</button> words from the dictionary
+            <p />
             <div class="divFloat" ng-hide="hideWords">
                 <strong>Dictionary words in use:</strong>
-                <button style="float: right; position: relative;" ng-click="showWords(false)"><strong>&times;</strong></button>
-                <br/>
-                <span ng-repeat="w in sortByFreq(km.pool)"><font size="{{ 3+myLog(wordCounter.get(w)) }}">{{ w }} </font></span>
+                <button style="float: right; position: relative;"
+                    ng-click="showWords(false)"><strong>&times;</strong></button>
+                <br />
+                <span ng-repeat="w in sortByFreq(km.pool)">
+                    <font size="{{ 3+myLog(wordCounter.get(w)) }}">{{ w }} </font>
+                </span>
             </div>
-            <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button><p/>
-            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Include Phrases: <textarea style="width: 30vw;" ng-model="seedText"></textarea><p/></div>
-            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Exclude words: <textarea style="width: 30vw;"  ng-model="exclusions"></textarea><p/></div>
-            Page size: <input type="range" ng-model="pageSize" min=10 max=50> {{ pageSize }} <p/>
+            <button type="button" ng-click="toggleAdvanced()">Toggle Advanced Features</button>
+            <p />
+            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Include Phrases: <textarea
+                    style="width: 30vw;" ng-model="seedText"></textarea>
+                <p />
+            </div>
+            <div style="display: {{ advanced }};" ng-model-options='{ debounce: 500 }'> Exclude words: <textarea
+                    style="width: 30vw;" ng-model="exclusions"></textarea>
+                <p />
+            </div>
+            Page size: <input type="range" ng-model="pageSize" min=10 max=50> {{ pageSize }}
+            <p />
             <div>
                 <table>
                     <tr style="background-color: #ff7f7f;" ng-repeat="e in errors">
@@ -63,7 +57,9 @@ table tr:nth-child(even) {
             <div ng-hide="anagrams.length == 0">
                 <button type="button" ng-click="backwardPage()" ng-disabled="startIndex <= 0">backward</button>
                 Anagrams {{ startIndex + 1 }} to {{ startIndex + anagrams.length }} of {{ numAnagrams }}&nbsp;
-                <button type="button" ng-click="forwardPage()" ng-disabled="count <= startIndex + pageSize">forward</button> <p/>
+                <button type="button" ng-click="forwardPage()"
+                    ng-disabled="count <= startIndex + pageSize">forward</button>
+                <p />
             </div>
             <table>
                 <tr ng-repeat="a in anagrams">
@@ -71,191 +67,200 @@ table tr:nth-child(even) {
                 </tr>
             </table>
         </div>
+        <div class="footer">
+            web implementation by <a href="mailto:mitch@mitchpatenaude.net?subject=Karma%20Manager">Mitch
+                Patenaude</a><br />
+            (thanks to the author of the 80's Mac Shareware)</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
 
-        web implementation by <a href="mailto:mitch@mitchpatenaude.net?subject=Karma%20Manager">Mitch Patenaude</a><br/>
-        (thanks to the author of the 80's Mac Shareware)
-
-        <script>
-var app = angular.module("karmaManager", []);
-app.controller("karmaKontrol", function($scope, $http) {
-    $scope.km = new KarmaManager();
-    $scope.config = new Object();
-    $scope.config.dictionaries = [];
-    $scope.advanced = "none";
-    $scope.hideWords=true;
-    $scope.startIndex = 0;
-    $scope.anagrams = [];
-    $scope.cachedAnagrams = [];
-    $scope.errors = [];
-    $scope.sourceWords = "";
-    $scope.pageSize = 20;
-    $scope.wordCounter = new StringCounter();
-    $scope.numAnagrams = 0;
-    $scope.maxAnagramCount = 5000;
-
-    $scope.refreshDictionaries = function() {
-        $scope.km = new KarmaManager();
-        let numDicts = 0;
-        for ( d of $scope.config.dictionaries ) {
-            if ( d.enabled ) {
-                $http.get(d.file).then( function(response) {
-                    $scope.km.readDictionary(response.data)
-                    refreshAnagrams();
-                });
-                numDicts += 1;
-            }
-        }
-        if ( numDicts == 0 ) {
-            $scope.errors.push('You need to have at least one dictionary enabled');
-        } 
-    }
-
-    $http.get('config.json').then( function(response) {
-        $scope.config = response.data;
-        $scope.refreshDictionaries();
-    });
-
-    $scope.toggleDict = function(d) {
-        d.enabled = ! d.enabled;
-    };
-
-    $scope.toggleAdvanced = function() {
-        if ( $scope.advanced == "none" ) {
-            $scope.advanced = "";
-        } else {
+    <script>
+        var app = angular.module("karmaManager", []);
+        app.controller("karmaKontrol", function ($scope, $http) {
+            $scope.km = new KarmaManager();
+            $scope.config = new Object();
+            $scope.config.dictionaries = [];
             $scope.advanced = "none";
-            $scope.km.clearSeedSet();
-            $scope.seedText = "";
-            $scope.exclusions = "";
-        }
-    };
+            $scope.hideWords = true;
+            $scope.startIndex = 0;
+            $scope.anagrams = [];
+            $scope.cachedAnagrams = [];
+            $scope.errors = [];
+            $scope.sourceWords = "";
+            $scope.pageSize = 20;
+            $scope.wordCounter = new StringCounter();
+            $scope.numAnagrams = 0;
+            $scope.maxAnagramCount = 5000;
 
-    $scope.showWords = function(flag) {
-        $scope.hideWords = ! flag;
-    };
-
-    $scope.toggleWords = function() {
-        $scope.hideWords = ! $scope.hideWords;
-    };
-
-    $scope.forwardPage = function() {
-        $scope.startIndex += $scope.pageSize;
-    };
-
-    $scope.backwardPage = function() {
-        $scope.startIndex -= $scope.pageSize;
-        if ( $scope.startIndex < 0 ) $scope.startIndex = 0;
-    };
-
-    $scope.sortByFreq = function(l) {
-        let retval = [...l];
-        retval.reverse();
-        retval = [...retval.filter(function(x) { return $scope.wordCounter.get(x) > 0; })];
-        retval.sort(function(a,b) { if ( b.length*$scope.wordCounter.get(b) >= a.length*$scope.wordCounter.get(a) ) return 1; else return -1;});
-        return retval;
-    };
-
-    $scope.$watchCollection("[sourceWords, seedText, exclusions]", function( newValue, oldValue ) {
-        refreshAnagrams();
-    });
-
-    function refreshAnagrams() {
-        $scope.errors = [];
-
-        $scope.km.clearSeedSet();
-
-        if ( $scope.seedText ) {
-            let target = parseWord($scope.sourceWords);
-            for ( let seed of $scope.seedText.split("\n") ) {
-                if ( seed ) {
-                    let seedTarget = parseWord(seed);
-                    if ( seedTarget.subsetOf(target) ) {
-                        $scope.km.setSeedSet(seed.split(" "));
-                    } else {
-                        $scope.errors.push("Included phrase '"+seed+"' not a subset of input words");
+            $scope.refreshDictionaries = function () {
+                $scope.km = new KarmaManager();
+                let numDicts = 0;
+                for (d of $scope.config.dictionaries) {
+                    if (d.enabled) {
+                        $http.get(d.file).then(function (response) {
+                            $scope.km.readDictionary(response.data)
+                            refreshAnagrams();
+                        });
+                        numDicts += 1;
                     }
                 }
-            }
-        }
-
-        $scope.km.clearExclusionSet();
-        if ( $scope.exclusions ) {
-            $scope.km.setExclusionSet($scope.exclusions.split(/[\s,]+/));
-        }
-
-        $scope.startIndex = 0;
-        
-        $scope.numAnagrams = 0;
-        $scope.wordCounter.counters.clear();
-        $scope.cachedAnagrams = [];
-        $scope.iterator = $scope.km.makeAnagrams([$scope.sourceWords]);
-
-        while ( true ) {
-            let n = $scope.iterator.next();
-            if ( n.done ) break;
-            let a = n.value;
-            $scope.cachedAnagrams.push(a);
-            for ( let w of a ) { 
-                $scope.wordCounter.countString(w.toLowerCase());
-            }
-            if ( ++$scope.numAnagrams >= $scope.maxAnagramCount ) {
-                $scope.numAnagrams = "many"
-                break;
-            }
-        }
-
-        makeAnagrams();
-    };
-
-    $scope.$watchCollection("[startIndex, pageSize]", function( newValue, oldValue ) {
-        makeAnagrams();
-    });
-
-    $scope.myLog = function(num) {
-        if ( num >= 125 ) {
-            return 4;
-        } else if ( num >= 25 ) {
-            return 3;
-        } else if ( num >= 5 ) {
-            return 2;
-        } else if ( num >= 1 ) {
-            return 1;
-        }
-        return 0;
-    };
-
-    function min(a, b) {
-        if ( a < b ) {
-            return a;
-        }
-        return b;
-    }
-
-    function makeAnagrams() {
-        $scope.count = min($scope.startIndex, $scope.cachedAnagrams.length);
-        $scope.anagrams = [];
-        while ( $scope.count <= $scope.startIndex + $scope.pageSize ) {
-            if ( $scope.count < $scope.cachedAnagrams.length ) {
-                if ( $scope.count < $scope.startIndex + $scope.pageSize ) {
-                    $scope.anagrams.push($scope.cachedAnagrams[$scope.count].join(" "));
-                }
-            } else {
-                let n = $scope.iterator.next();
-                if ( n.done ) {
-                    break;
-                }
-                $scope.cachedAnagrams.push(n.value);
-                for ( let w of n.value ) {
-                    $scope.wordCounter.countString(w.toLower);
-                }
-                if ( $scope.count >= $scope.startIndex && $scope.count < ($scope.startIndex+$scope.pageSize) ) {
-                    $scope.anagrams.push(n.value.join(" "));
+                if (numDicts == 0) {
+                    $scope.errors.push('You need to have at least one dictionary enabled');
                 }
             }
-            $scope.count++;
-        }
-    }
-});
-        </script>
-    </body>
+
+            $http.get('config.json').then(function (response) {
+                $scope.config = response.data;
+                $scope.refreshDictionaries();
+            });
+
+            $scope.toggleDict = function (d) {
+                d.enabled = !d.enabled;
+            };
+
+            $scope.toggleAdvanced = function () {
+                if ($scope.advanced == "none") {
+                    $scope.advanced = "";
+                } else {
+                    $scope.advanced = "none";
+                    $scope.km.clearSeedSet();
+                    $scope.seedText = "";
+                    $scope.exclusions = "";
+                }
+            };
+
+            $scope.showWords = function (flag) {
+                $scope.hideWords = !flag;
+            };
+
+            $scope.toggleWords = function () {
+                $scope.hideWords = !$scope.hideWords;
+            };
+
+            $scope.forwardPage = function () {
+                $scope.startIndex += $scope.pageSize;
+            };
+
+            $scope.backwardPage = function () {
+                $scope.startIndex -= $scope.pageSize;
+                if ($scope.startIndex < 0) $scope.startIndex = 0;
+            };
+
+            $scope.sortByFreq = function (l) {
+                let retval = [...l];
+                retval.reverse();
+                retval = [...retval.filter(function (x) { return $scope.wordCounter.get(x) > 0; })];
+                retval.sort(function (a, b) { if (b.length * $scope.wordCounter.get(b) >= a.length * $scope.wordCounter.get(a)) return 1; else return -1; });
+                return retval;
+            };
+
+            $scope.$watchCollection("[sourceWords, seedText, exclusions]", function (newValue, oldValue) {
+                refreshAnagrams();
+            });
+
+            function refreshAnagrams() {
+                $scope.errors = [];
+
+                $scope.km.clearSeedSet();
+
+                if ($scope.seedText) {
+                    let target = parseWord($scope.sourceWords);
+                    for (let seed of $scope.seedText.split("\n")) {
+                        if (seed) {
+                            let seedTarget = parseWord(seed);
+                            if (seedTarget.subsetOf(target)) {
+                                $scope.km.setSeedSet(seed.split(" "));
+                            } else {
+                                $scope.errors.push("Included phrase '" + seed + "' not a subset of input words");
+                            }
+                        }
+                    }
+                }
+
+                $scope.km.clearExclusionSet();
+                if ($scope.exclusions) {
+                    $scope.km.setExclusionSet($scope.exclusions.split(/[\s,]+/));
+                }
+
+                $scope.startIndex = 0;
+
+                $scope.numAnagrams = 0;
+                $scope.wordCounter.counters.clear();
+                $scope.cachedAnagrams = [];
+                $scope.iterator = $scope.km.makeAnagrams([$scope.sourceWords]);
+
+                while (true) {
+                    let n = $scope.iterator.next();
+                    if (n.done) break;
+                    let a = n.value;
+                    $scope.cachedAnagrams.push(a);
+                    for (let w of a) {
+                        $scope.wordCounter.countString(w.toLowerCase());
+                    }
+                    if (++$scope.numAnagrams >= $scope.maxAnagramCount) {
+                        $scope.numAnagrams = "many"
+                        break;
+                    }
+                }
+
+                makeAnagrams();
+            };
+
+            $scope.$watchCollection("[startIndex, pageSize]", function (newValue, oldValue) {
+                makeAnagrams();
+            });
+
+            $scope.myLog = function (num) {
+                if (num >= 125) {
+                    return 4;
+                } else if (num >= 25) {
+                    return 3;
+                } else if (num >= 5) {
+                    return 2;
+                } else if (num >= 1) {
+                    return 1;
+                }
+                return 0;
+            };
+
+            function min(a, b) {
+                if (a < b) {
+                    return a;
+                }
+                return b;
+            }
+
+            function makeAnagrams() {
+                $scope.count = min($scope.startIndex, $scope.cachedAnagrams.length);
+                $scope.anagrams = [];
+                while ($scope.count <= $scope.startIndex + $scope.pageSize) {
+                    if ($scope.count < $scope.cachedAnagrams.length) {
+                        if ($scope.count < $scope.startIndex + $scope.pageSize) {
+                            $scope.anagrams.push($scope.cachedAnagrams[$scope.count].join(" "));
+                        }
+                    } else {
+                        let n = $scope.iterator.next();
+                        if (n.done) {
+                            break;
+                        }
+                        $scope.cachedAnagrams.push(n.value);
+                        for (let w of n.value) {
+                            $scope.wordCounter.countString(w.toLower);
+                        }
+                        if ($scope.count >= $scope.startIndex && $scope.count < ($scope.startIndex + $scope.pageSize)) {
+                            $scope.anagrams.push(n.value.join(" "));
+                        }
+                    }
+                    $scope.count++;
+                }
+            }
+        });
+    </script>
+</body>
+
 </html>
